@@ -9,4 +9,4 @@ exports.typeSalarieSchema = new Schema(
   }
 );
 
-exports.TypeSalarie = model("TypeSalarie", typeSalarieSchema);
+exports.TypeSalarie = model("TypeSalarie", exports.typeSalarieSchema);

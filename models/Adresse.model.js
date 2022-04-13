@@ -17,4 +17,4 @@ exports.adresseSchema = new Schema(
   }
 );
 
-exports.Adresse = model("Adresse", adresseSchema);
+exports.Adresse = model("Adresse", exports.adresseSchema);

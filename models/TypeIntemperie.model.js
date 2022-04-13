@@ -9,4 +9,4 @@ exports.typeIntemperieSchema = new Schema(
   }
 );
 
-exports.TypeIntemperie = model("TypeIntemperie", typeIntemperieSchema);
+exports.TypeIntemperie = model("TypeIntemperie", exports.typeIntemperieSchema);

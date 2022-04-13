@@ -19,4 +19,4 @@ exports.userSchema = new Schema(
   }
 );
 
-exports.User = model("User", userSchema);
+exports.User = model("User", exports.userSchema);

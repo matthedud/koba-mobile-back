@@ -2,9 +2,10 @@ const router = require('express').Router()
 const bcrypt = require('bcryptjs')
 const jsonwebtoken = require('jsonwebtoken')
 const { isAuthenticated } = require('../middleware/jwt.middleware')
-const User = require('../models/User.model')
+const {User} = require('../models/User.model')
 
 router.post('/auth/signup', async (req, res, next) => {
+
   const { username, password } = req.body
 
   const foundUser = await User.findOne({ username })

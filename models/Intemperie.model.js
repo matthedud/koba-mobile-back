@@ -16,5 +16,5 @@ exports.intemperieSchema = new Schema(
   }
 );
 
-exports.Intemperie = model("Intemperie", intemperieSchema);
+exports.Intemperie = model("Intemperie", exports.intemperieSchema);
 

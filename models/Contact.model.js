@@ -45,4 +45,4 @@ exports.contactSchema = new Schema(
   },
 );
 
-exports.Contact = model("Contact", contactSchema);
+exports.Contact = model("Contact", exports.contactSchema);

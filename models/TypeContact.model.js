@@ -9,4 +9,4 @@ exports.typeContactSchema = new Schema(
   }
 );
 
-exports.TypeContact = model("TypeContact", typeContactSchema);
+exports.TypeContact = model("TypeContact", exports.typeContactSchema);

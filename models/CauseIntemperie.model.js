@@ -9,4 +9,4 @@ exports.causeIntemperieSchema = new Schema(
   }
 );
 
-exports.CauseIntemperie = model("CauseIntemperie", causeIntemperieSchema);
+exports.CauseIntemperie = model("CauseIntemperie", exports.causeIntemperieSchema);
