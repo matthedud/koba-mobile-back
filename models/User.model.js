@@ -1,5 +1,6 @@
 const { Schema, model } = require("mongoose");
 
+
 // TODO: Please make sure you edit the user model to whatever makes sense in this case
 exports.userSchema = new Schema(
   {
@@ -11,6 +12,9 @@ exports.userSchema = new Schema(
     password: {
       type: String,
       required: true,
+    },
+    salarie: { 
+      type: Schema.Types.ObjectId, ref: 'Salarie',
     },
   },
   {
