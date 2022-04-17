@@ -7,7 +7,7 @@ exports.intemperieSchema = new Schema(
       type: String,
       required: true,
     },
-    salarie: { type: Schema.Types.ObjectId, ref: 'Salarie', required: true, },
+    salarie: { type: [Schema.Types.ObjectId], ref: 'Salarie', required: true, },
     commentaire: String,
     cause: {
       type: typeIntemperieSchema,

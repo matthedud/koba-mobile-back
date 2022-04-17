@@ -1,10 +1,38 @@
-const router = require("express").Router();
+const router = require("express").Router()
+const { isAuthenticated } = require("../middleware/jwt.middleware")
+const { User } = require("../models/User.model")
+const {Salarie} = require("../models/Salarie.model")
+const axios = require("axios")
 
-router.get("/", (req, res, next) => {
-  res.json("All good in here");
-});
+const API_URL = "http://localhost:80/mobile"
 
-// You put the next routes here 👇
-// example: router.use("/auth", authRoutes)
+router.get("/chantiers", isAuthenticated, async (req, res, next) => {
+  try {
+    const user = await User.findOne({ username: req.payload.username })
+    const chantier = await axios.get(API_URL + "/chantiers/" + user._id)
+    res.status(200).json(chantier.data)
+  } catch (err) {
+    res.status(500).send(err)
+  }
+})
 
-module.exports = router;
+router.get("/chantiers-salarier/:salarierID", isAuthenticated, async (req, res, next) => {
+  try {
+    const user = await User.findOne({ username: req.payload.username })
+    const chantier = await axios.get(API_URL + "/chantiers/" + user._id)
+    res.status(200).json(chantier.data)
+  } catch (err) {
+    res.status(500).send(err)
+  }
+})
+
+router.get("/salaries", isAuthenticated, async (req, res, next) => {
+  try {
+    const salarie = await Salarie.find()
+    res.status(200).json(salarie)
+  } catch (err) {
+    res.status(500).send(err)
+  }
+})
+
+module.exports = router

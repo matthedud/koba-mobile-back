@@ -21,4 +21,4 @@ exports.pointageSchema = new Schema(
   }
 );
 
-exports.Pointage = model("Pointage", exports.pointageSchema);
+exports.Pointage = model("Pointage", this.pointageSchema);
