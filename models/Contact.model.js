@@ -1,5 +1,4 @@
 const { Schema, model } = require("mongoose");
-const {typeContactSchema} = require('./TypeContact.model')
 const {adresseSchema} = require('./Adresse.model')
 
 const telephoneSchema = new Schema(
@@ -38,10 +37,6 @@ exports.contactSchema = new Schema(
       required: true,
     },
     commentaire: String,
-    typeContact: {
-      type: typeContactSchema,
-      required: true,
-    }
   },
 );
 
