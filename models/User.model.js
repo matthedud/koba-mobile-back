@@ -13,9 +13,7 @@ exports.userSchema = new Schema(
       type: String,
       required: true,
     },
-    salarie: { 
-      type: Schema.Types.ObjectId, ref: 'Salarie',
-    },
+    salarie: { type: Schema.Types.ObjectId, ref: 'Salarie', required: true, },
   },
   {
     // this second object adds extra properties: `createdAt` and `updatedAt`

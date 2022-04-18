@@ -33,4 +33,4 @@ exports.interventionSchema = new Schema(
   }
 );
 
-exports.Intervention = model("Intervention", exports.interventionSchema);
+exports.Intervention = model("Intervention", this.interventionSchema);

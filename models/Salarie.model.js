@@ -20,4 +20,4 @@ exports.salarieSchema = new Schema(
   },
 );
 
-exports.Salarie = model("Salarie", exports.salarieSchema);
+exports.Salarie = model("Salarie", this.salarieSchema);
