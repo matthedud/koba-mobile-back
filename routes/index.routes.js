@@ -4,7 +4,7 @@ const { User } = require("../models/User.model")
 const {Salarie} = require("../models/Salarie.model")
 const axios = require("axios")
 
-const API_URL = "http://localhost:80/mobile"
+const API_URL = "https://koba-api.herokuapp.com/mobile"
 
 router.get("/chantiers", isAuthenticated, async (req, res, next) => {
   try {
@@ -12,9 +12,23 @@ router.get("/chantiers", isAuthenticated, async (req, res, next) => {
     const chantier = await axios.get(API_URL + "/chantiers/" + user._id)
     res.status(200).json(chantier.data)
   } catch (err) {
+    console.log(err);
     res.status(500).send(err)
   }
 })
+
+router.get("/chantiers/:chantierID", isAuthenticated, async (req, res, next) => {
+  const {chantierID} = req.params
+  try {
+    const chantier = await axios.get(API_URL + "/chantier/" + chantierID)
+    console.log('chantier', chantier);
+    res.status(200).json(chantier.data)
+  } catch (err) {
+    console.log(err);
+    res.status(500).send(err)
+  }
+})
+
 
 router.get("/chantiers-salarier/:salarierID", isAuthenticated, async (req, res, next) => {
   try {
@@ -22,6 +36,7 @@ router.get("/chantiers-salarier/:salarierID", isAuthenticated, async (req, res, 
     const chantier = await axios.get(API_URL + "/chantiers/" + user._id)
     res.status(200).json(chantier.data)
   } catch (err) {
+    console.log(err);
     res.status(500).send(err)
   }
 })
@@ -31,8 +46,32 @@ router.get("/salaries", isAuthenticated, async (req, res, next) => {
     const salarie = await Salarie.find()
     res.status(200).json(salarie)
   } catch (err) {
+    console.log(err);
     res.status(500).send(err)
   }
 })
+
+router.get("/tachesPrevu/:chantierID/:date", isAuthenticated, async (req, res, next) => {
+  try {
+    const {chantierID, date} = req.params
+    const taches = await axios.get(`${API_URL}/tachesPrevu/${chantierID}/${date}`)
+    res.status(200).json(taches.data)
+  } catch (err) {
+    console.log(err);
+    res.status(500).send(err)
+  }
+})
+
+router.get("/tacheChantier/:chantierID", isAuthenticated, async (req, res, next) => {
+  try {
+    const {chantierID} = req.params
+    const taches = await axios.get(`${API_URL}/tacheChantier/${chantierID}`)
+    res.status(200).json(taches.data)
+  } catch (err) {
+    console.log(err);
+    res.status(500).send(err)
+  }
+})
+
 
 module.exports = router
