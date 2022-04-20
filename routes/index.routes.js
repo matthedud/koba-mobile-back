@@ -17,6 +17,19 @@ router.get("/chantiers", isAuthenticated, async (req, res, next) => {
   }
 })
 
+router.get("/planning-salarie/:date", isAuthenticated, async (req, res, next) => {
+  try {
+    const { date} = req.params
+    const user = await User.findOne({ username: req.payload.username })
+    const planning = await axios.get(`${API_URL}/planning-salarie/${user.salarie}/${date}`)
+    res.status(200).json(planning.data)
+    console.log(planning.data)
+  } catch (err) {
+    console.log(err);
+    res.status(500).send(err)
+  }
+})
+
 router.get("/chantiers/:chantierID", isAuthenticated, async (req, res, next) => {
   const {chantierID} = req.params
   try {
