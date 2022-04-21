@@ -4,7 +4,7 @@ const { User } = require("../models/User.model")
 const {Salarie} = require("../models/Salarie.model")
 const axios = require("axios")
 
-const API_URL = "https://koba-api.herokuapp.com/mobile"
+const API_URL = process.env.API_URL || "http://localhost:4000/mobile";
 
 router.get("/chantiers", isAuthenticated, async (req, res, next) => {
   try {
