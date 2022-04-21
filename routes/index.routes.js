@@ -4,7 +4,9 @@ const { User } = require("../models/User.model")
 const { Salarie } = require("../models/Salarie.model")
 const axios = require("axios")
 const { Pointage } = require("../models/Pointage.model")
+const { Photo } = require("../models/Photo.model")
 const { Intervention } = require("../models/Intervention.model")
+const {cloudinary} = require ('../utils/cloudinary.js')
 
 const API_URL = process.env.API_URL || "http://localhost:4000/mobile"
 
@@ -143,6 +145,20 @@ router.post("/pointage", isAuthenticated, async (req, res, next) => {
       intervention,
     })
     res.status(200).json({ newPointage })
+  } catch (err) {
+    console.log(err)
+    res.status(500).send(err)
+  }
+})
+
+router.post("/upload", isAuthenticated, async (req, res, next) => {
+  const {image, chantier, poste, commentaire} = req.body
+  try {
+    if(image && chantier){
+      const uploadResponse = await cloudinary.uploader.upload(image, {upload_preset:'photoChantier'})
+      const newPhoto = Photo.create({imageUrl:uploadResponse.secure_url, chantier, poste, commentaire})
+      res.status(200).json(newPhoto)
+    }
   } catch (err) {
     console.log(err)
     res.status(500).send(err)
