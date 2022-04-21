@@ -98,6 +98,31 @@ router.get("/pointage", isAuthenticated, async (req, res, next) => {
   try {
     const user = await User.findOne({ username: req.payload.username })
     const pointage = await Pointage.find({ "intevention.mainDoeuvre.salarieID": user.salarie })
+    const tachesChantierReq = await axios.get(`${API_URL}/tacheChantier-detail/${pointage[0].chantierID}/${pointage[0].intervention[0].tacheChantierID}`)
+    console.log('KAMEHAMEHA',tachesChantierReq.data)
+
+    res.status(200).json(pointage)
+  } catch (err) {
+    console.log(err)
+    res.status(500).send(err)
+  }
+})
+
+router.get("/pointage/:pointageID", isAuthenticated, async (req, res, next) => {
+  try {
+    const { pointageID } = req.params
+    const pointage = await Pointage.findById(pointageID)
+
+    // const pointageRes = []
+    // for(const planningEl of planning.data.planning){
+    //   const salarieTab = planningEl.salarieID.map((item)=> item.salarieID)
+    //   const salarieList = await Salarie.find({'_id' : {$in: salarieTab}})
+    //   planningRes.push({
+    //     ...planningEl,
+    //     salarie:salarieList
+    //   })
+    // }
+
     res.status(200).json(pointage)
   } catch (err) {
     console.log(err)
