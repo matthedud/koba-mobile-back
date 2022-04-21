@@ -46,7 +46,6 @@ router.get("/chantiers/:chantierID", isAuthenticated, async (req, res, next) => 
   const { chantierID } = req.params
   try {
     const chantier = await axios.get(API_URL + "/chantier/" + chantierID)
-    console.log("chantier", chantier)
     res.status(200).json(chantier.data)
   } catch (err) {
     console.log(err)
@@ -139,5 +138,14 @@ router.post("/upload", isAuthenticated, async (req, res, next) => {
     res.status(500).send(err)
   }
 })
-
+router.get("/photos-chantier/:chantierID", isAuthenticated, async (req, res, next) => {
+  const {chantierID} = req.params
+  try {
+      const images = await Photo.find({chantier:chantierID})
+      res.status(200).json(images)
+  } catch (err) {
+    console.log(err)
+    res.status(500).send(err)
+  }
+})
 module.exports = router
