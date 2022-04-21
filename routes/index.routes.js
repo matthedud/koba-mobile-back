@@ -130,6 +130,7 @@ router.post("/upload", isAuthenticated, async (req, res, next) => {
   try {
     if(image && chantier){
       const uploadResponse = await cloudinary.uploader.upload(image, {upload_preset:'photoChantier'})
+      console.log({uploadResponse});
       const newPhoto = Photo.create({imageUrl:uploadResponse.secure_url, chantier, poste, commentaire})
       res.status(200).json(newPhoto)
     }
