@@ -22,8 +22,16 @@ router.get("/planning-salarie/:date", isAuthenticated, async (req, res, next) =>
     const { date} = req.params
     const user = await User.findOne({ username: req.payload.username })
     const planning = await axios.get(`${API_URL}/planning-salarie/${user.salarie}/${date}`)
-    res.status(200).json(planning.data)
-    console.log(planning.data)
+    const planningRes = []
+    for(const planningEl of planning.data.planning){
+      const salarieTab = planningEl.salarieID.map((item)=> item.salarieID)
+      const salarieList = await Salarie.find({'_id' : {$in: salarieTab}})
+      planningRes.push({
+        ...planningEl,
+        salarie:salarieList
+      })
+    }
+    res.status(200).json(planningRes)
   } catch (err) {
     console.log(err);
     res.status(500).send(err)
@@ -41,7 +49,6 @@ router.get("/chantiers/:chantierID", isAuthenticated, async (req, res, next) => 
     res.status(500).send(err)
   }
 })
-
 
 router.get("/chantiers-salarier/:salarierID", isAuthenticated, async (req, res, next) => {
   try {
