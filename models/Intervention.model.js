@@ -12,7 +12,6 @@ const mainDoeuvreSchema = new Schema(
 
 exports.interventionSchema = new Schema(
   {
-    pointageID: { type: Schema.Types.ObjectId, ref: 'Pointage', required: true, },
     tacheChantierID: {
       type: String,
       required: true,
@@ -27,7 +26,7 @@ exports.interventionSchema = new Schema(
     },
     commentaire: String,
     mainDoeuvre: {
-        type: mainDoeuvreSchema,
+        type: [mainDoeuvreSchema],
         required: true,
     },
   }
