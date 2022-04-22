@@ -106,6 +106,32 @@ router.get("/pointage", isAuthenticated, async (req, res, next) => {
   }
 })
 
+router.get("/pointage/:pointageID", isAuthenticated, async (req, res, next) => {
+  try {
+    const { pointageID } = req.params
+    const pointage = await Pointage.findById(pointageID)
+    let tachesChantierReq = []
+    let salaries = []
+    let salarieTemp
+    for(let i=0;i<pointage.intervention.length;i++){
+      tachesChantierReq.push(await axios.get(`${API_URL}/tacheChantier-detail/${pointage.chantierID}/${pointage.intervention[i].tacheChantierID}`))
+      for(let j=0;j<pointage.intervention[i].mainDoeuvre.length;j++){
+        salarieTemp = await Salarie.findById(pointage.intervention[i].mainDoeuvre[j].salarieID)
+        salarieTemp = salarieTemp.contact.prenom+' '+salarieTemp.contact.nom
+        if(!salaries.includes(salarieTemp)){
+          salaries.push(salarieTemp)
+        }
+      }
+    }
+    tachesChantierReq = tachesChantierReq.map(item=>item.data)
+
+    res.status(200).json({taches:tachesChantierReq,salaries:salaries})
+  } catch (err) {
+    console.log(err)
+    res.status(500).send(err)
+  }
+})
+
 router.post("/pointage", isAuthenticated, async (req, res, next) => {
   const pointage = req.body
   try {
