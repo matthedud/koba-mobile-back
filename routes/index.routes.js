@@ -161,6 +161,7 @@ router.post("/upload", isAuthenticated, async (req, res, next) => {
       }
       res.status(200).json('yeah')
     }
+    res.status(500).json('no good')
   } catch (err) {
     console.log(err)
     res.status(500).send(err)
