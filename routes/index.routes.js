@@ -159,7 +159,6 @@ router.post("/upload", isAuthenticated, async (req, res, next) => {
         const uploadResponse = await cloudinary.uploader.upload(imageEl, {upload_preset:'photoChantier'})
         await Photo.create({imageUrl:uploadResponse.secure_url, chantier, poste, commentaire})
       }
-      res.status(200).json('yeah')
     }
     res.status(500).json('no good')
   } catch (err) {
