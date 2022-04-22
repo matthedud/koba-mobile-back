@@ -46,7 +46,6 @@ router.get("/chantiers/:chantierID", isAuthenticated, async (req, res, next) => 
   const { chantierID } = req.params
   try {
     const chantier = await axios.get(API_URL + "/chantier/" + chantierID)
-    console.log("chantier", chantier)
     res.status(200).json(chantier.data)
   } catch (err) {
     console.log(err)
@@ -100,9 +99,6 @@ router.get("/pointage", isAuthenticated, async (req, res, next) => {
   try {
     const user = await User.findOne({ username: req.payload.username })
     const pointage = await Pointage.find({ "intevention.mainDoeuvre.salarieID": user.salarie })
-    const tachesChantierReq = await axios.get(`${API_URL}/tacheChantier-detail/${pointage[0].chantierID}/${pointage[0].intervention[0].tacheChantierID}`)
-    console.log('KAMEHAMEHA',tachesChantierReq.data)
-
     res.status(200).json(pointage)
   } catch (err) {
     console.log(err)
@@ -114,18 +110,22 @@ router.get("/pointage/:pointageID", isAuthenticated, async (req, res, next) => {
   try {
     const { pointageID } = req.params
     const pointage = await Pointage.findById(pointageID)
+    let tachesChantierReq = []
+    let salaries = []
+    let salarieTemp
+    for(let i=0;i<pointage.intervention.length;i++){
+      tachesChantierReq.push(await axios.get(`${API_URL}/tacheChantier-detail/${pointage.chantierID}/${pointage.intervention[i].tacheChantierID}`))
+      for(let j=0;j<pointage.intervention[i].mainDoeuvre.length;j++){
+        salarieTemp = await Salarie.findById(pointage.intervention[i].mainDoeuvre[j].salarieID)
+        salarieTemp = salarieTemp.contact.prenom+' '+salarieTemp.contact.nom
+        if(!salaries.includes(salarieTemp)){
+          salaries.push(salarieTemp)
+        }
+      }
+    }
+    tachesChantierReq = tachesChantierReq.map(item=>item.data)
 
-    // const pointageRes = []
-    // for(const planningEl of planning.data.planning){
-    //   const salarieTab = planningEl.salarieID.map((item)=> item.salarieID)
-    //   const salarieList = await Salarie.find({'_id' : {$in: salarieTab}})
-    //   planningRes.push({
-    //     ...planningEl,
-    //     salarie:salarieList
-    //   })
-    // }
-
-    res.status(200).json(pointage)
+    res.status(200).json({taches:tachesChantierReq,salaries:salaries})
   } catch (err) {
     console.log(err)
     res.status(500).send(err)
