@@ -156,6 +156,7 @@ router.post("/upload", isAuthenticated, async (req, res, next) => {
   try {
     if(image && chantier){
       const uploadResponse = await cloudinary.uploader.upload(image, {upload_preset:'photoChantier'})
+      console.log({uploadResponse});
       const newPhoto = Photo.create({imageUrl:uploadResponse.secure_url, chantier, poste, commentaire})
       res.status(200).json(newPhoto)
     }
@@ -164,5 +165,14 @@ router.post("/upload", isAuthenticated, async (req, res, next) => {
     res.status(500).send(err)
   }
 })
-
+router.get("/photos-chantier/:chantierID", isAuthenticated, async (req, res, next) => {
+  const {chantierID} = req.params
+  try {
+      const images = await Photo.find({chantier:chantierID})
+      res.status(200).json(images)
+  } catch (err) {
+    console.log(err)
+    res.status(500).send(err)
+  }
+})
 module.exports = router
