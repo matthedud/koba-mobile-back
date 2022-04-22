@@ -129,10 +129,11 @@ router.post("/upload", isAuthenticated, async (req, res, next) => {
   const {image, chantier, poste, commentaire} = req.body
   try {
     if(image && chantier){
-      const uploadResponse = await cloudinary.uploader.upload(image, {upload_preset:'photoChantier'})
-      console.log({uploadResponse});
-      const newPhoto = Photo.create({imageUrl:uploadResponse.secure_url, chantier, poste, commentaire})
-      res.status(200).json(newPhoto)
+      for(const imageEl of image){
+        const uploadResponse = await cloudinary.uploader.upload(imageEl, {upload_preset:'photoChantier'})
+        await Photo.create({imageUrl:uploadResponse.secure_url, chantier, poste, commentaire})
+      }
+      res.status(200).json('yeah')
     }
   } catch (err) {
     console.log(err)
