@@ -155,20 +155,12 @@ router.post("/pointage", isAuthenticated, async (req, res, next) => {
   }
 })
 
-router.patch("/pointage/:pointgeID", isAuthenticated, async (req, res, next) => {
-  const { pointageID } = req.params
-  const pointage = req.body
+router.post("/edit-photo/:photoID", isAuthenticated, async (req, res, next) => {
+  const { photoID } = req.params
+  const photo = req.body
   try {
-    const intervention = pointage.intervention.map((interv) => {
-      const mainDoeuvre = interv.salarie.map((el) => ({ ...el, salarieID: el._id }))
-      return { ...interv, mainDoeuvre, tacheChantierID: interv.tacheChantier._id }
-    })
-    const updatedPointage = await Pointage.findByIdAndUpdate(pointageID, {
-      ...pointage,
-      chantierID: pointage.chantier._id,
-      intervention,
-    })
-    res.status(200).json({ updatedPointage })
+    const updatedPhoto = await Photo.findByIdAndUpdate(photoID, photo)
+    res.status(200).json({ updatedPhoto })
   } catch (err) {
     console.log(err)
     res.status(500).send(err)
